@@ -21,21 +21,28 @@ async function run() {
   try {
     const serviceCollection = client.db("cloudfood").collection("services");
     const reviewCollection = client.db("cloudfood").collection("reviews");
+// new serviceCollection adding to bd
+    app.post("/services", async (req, res) => {
+      const service = req.body;
+      const result = await serviceCollection.insertOne(service);
+      res.send(result);
+    });
 
+    // all services send
     app.get("/services", async (req, res) => {
       const query = {};
       const cursor = serviceCollection.find(query);
       const services = await cursor.limit(3).toArray();
       res.send(services);
     });
-    // for sepecific services
+    // for sepecific services app.get
     app.get("/service", async (req, res) => {
       const query = {};
       const cursor = serviceCollection.find(query);
       const services = await cursor.toArray();
       res.send(services);
     });
-    // data taking
+    // data take
     app.get("/services/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
