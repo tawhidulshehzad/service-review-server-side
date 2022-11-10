@@ -54,7 +54,9 @@ async function run() {
       const query = { service: id };
       const cursor = reviewCollection.find(query);
       const reviews = await cursor.toArray();
+      console.log(id)
       res.send(reviews);
+      
     });
 
     // reviews collection
