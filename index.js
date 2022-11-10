@@ -21,7 +21,7 @@ async function run() {
   try {
     const serviceCollection = client.db("cloudfood").collection("services");
     const reviewCollection = client.db("cloudfood").collection("reviews");
-// new serviceCollection adding to bd
+    // new serviceCollection adding to bd
     app.post("/services", async (req, res) => {
       const service = req.body;
       const result = await serviceCollection.insertOne(service);
@@ -48,6 +48,13 @@ async function run() {
       const query = { _id: ObjectId(id) };
       const service = await serviceCollection.findOne(query);
       res.send(service);
+    });
+    app.get("/reviews/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { service: id };
+      const cursor = reviewCollection.find(query);
+      const reviews = await cursor.toArray();
+      res.send(reviews);
     });
 
     // reviews collection
